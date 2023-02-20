@@ -10,10 +10,11 @@ from flask import g
 from playwright.sync_api import sync_playwright
 
 PROFILE_DIR = "/tmp/playwright" if '--profile' not in sys.argv else sys.argv[sys.argv.index('--profile') + 1]
-PORT = 5001 if '--port' not in sys.argv else int(sys.argv[sys.argv.index('--port') + 1])
+#PROFILE_DIR = "C:\Users\ras1\AppData\Local\Google\Chrome\User Data\Default"
+PORT = 443 if '--port' not in sys.argv else int(sys.argv[sys.argv.index('--port') + 1])
 APP = flask.Flask(__name__)
 PLAY = sync_playwright().start()
-BROWSER = PLAY.chromium.launch_persistent_context(
+BROWSER = PLAY.firefox.launch_persistent_context(
     user_data_dir=PROFILE_DIR,
     headless=False,
 )
@@ -62,7 +63,7 @@ def chat():
     return response
 
 def start_browser():
-    PAGE.goto("https://chat.openai.com/")
+    PAGE.goto("https://chat.openai.com/chat")
     APP.run(port=PORT, threaded=False)
     if not is_logged_in():
         print("Please log in to OpenAI Chat")
